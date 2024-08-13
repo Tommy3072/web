@@ -27,6 +27,11 @@ def upload_file():
 
     return "El archivo no es un PDF válido"
 
+@app.route('/files')
+def list_files():
+    files = os.listdir(app.config['UPLOAD_FOLDER'])
+    return render_template('files.html', files=files)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
