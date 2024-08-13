@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Archivo</title>
+    <title>Subir PDF</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,10 +35,11 @@
     </style>
 </head>
 <body>
-    <form id="uploadForm" method="post" enctype="multipart/form-data">
-        <input type="file" id="fileInput" name="file">
-        <button type="submit">Subir archivo</button>
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" accept=".pdf">
+        <button type="submit">Subir archivo PDF</button>
     </form>
 </body>
 </html>
+
 
