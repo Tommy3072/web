@@ -35,15 +35,43 @@
     </style>
 </head>
 <body>
-    <form id="uploadForm" method="post" enctype="multipart/form-data" action="/upload">
+    <form id="uploadForm" method="post" enctype="multipart/form-data">
         <input type="file" id="fileInput" name="file">
         <button type="submit">Subir archivo</button>
-        {% if message %}
-            <p>{{ message }}</p>
-        {% endif %}
     </form>
+
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let fileInput = document.getElementById('fileInput');
+            let file = fileInput.files[0];
+
+            if (!file) {
+                alert('Por favor selecciona un archivo.');
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    alert('Archivo subido con éxito');
+                } else {
+                    alert('Error al subir el archivo');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>
-
-
-
