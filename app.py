@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import os
 
 app = Flask(__name__, template_folder='templates')
@@ -13,19 +13,19 @@ def upload_form():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return "No se ha seleccionado ningún archivo", 400
+        return "No se ha seleccionado ningún archivo"
     
     file = request.files['file']
 
     if file.filename == '':
-        return "No se ha seleccionado ningún archivo", 400
+        return "No se ha seleccionado ningún archivo"
 
-    if file:
+    if file and file.filename.endswith('.pdf'):
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filepath)
-        return f"Archivo subido exitosamente: {file.filename}", 200
+        return f"Archivo subido exitosamente: {file.filename}"
 
-    return "Error al subir el archivo", 400
+    return "El archivo no es un PDF válido"
 
 if __name__ == '__main__':
     app.run(debug=True)
