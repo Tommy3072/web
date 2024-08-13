@@ -1,27 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir y Ver Archivos PDF</title>
+    <title>Subir Archivo</title>
 </head>
 <body>
-    <h1>Subir Archivo PDF</h1>
-    
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
-    
-    <form method="POST" enctype="multipart/form-data" action="/">
-        <input type="file" name="file">
-        <button type="submit">Subir</button>
+    <h1>Subir un archivo PDF</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".pdf">
+        <input type="submit" value="Subir archivo">
     </form>
-
-    <h2>Archivos Subidos</h2>
-    <ul>
-        {% for file in files %}
-        <li><a href="{{ url_for('serve_file', filename=file) }}">{{ file }}</a></li>
-        {% endfor %}
-    </ul>
 </body>
 </html>
