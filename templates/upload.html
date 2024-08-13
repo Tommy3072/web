@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir PDF</title>
+    <title>Subir Archivo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,11 +35,15 @@
     </style>
 </head>
 <body>
-    <form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+    <form id="uploadForm" method="post" enctype="multipart/form-data" action="/upload">
         <input type="file" id="fileInput" name="file">
         <button type="submit">Subir archivo</button>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
     </form>
 </body>
 </html>
+
 
 
