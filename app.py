@@ -6,27 +6,27 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-@app.route('/')
-def upload_form():
-    return render_template('upload.html')
-
-@app.route('/upload', methods=['POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return "No se ha seleccionado ningún archivo"
+    message = ""
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            message = "No se ha seleccionado ningún archivo"
+        else:
+            file = request.files['file']
+
+            if file.filename == '':
+                message = "No se ha seleccionado ningún archivo"
+            elif file and file.filename.endswith('.pdf'):
+                filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+                file.save(filepath)
+                message = f"Archivo subido exitosamente: {file.filename}"
+            else:
+                message = "El archivo no es un PDF válido"
     
-    file = request.files['file']
-
-    if file.filename == '':
-        return "No se ha seleccionado ningún archivo"
-
-    if file and file.filename.endswith('.pdf'):
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filepath)
-        return f"Archivo subido exitosamente: {file.filename}"
-
-    return "El archivo no es un PDF válido"
+    return render_template('upload.html', message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
