@@ -32,21 +32,13 @@
         button:hover {
             background-color: #0056b3;
         }
-        .message {
-            margin-top: 10px;
-            font-size: 14px;
-            color: green;
-        }
     </style>
 </head>
 <body>
-    <form id="uploadForm" action="/" method="post" enctype="multipart/form-data">
-        <input type="file" id="fileInput" name="file" accept=".pdf">
-        <button type="submit">Subir archivo PDF</button>
+    <form id="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file">
+        <button type="submit">Subir archivo</button>
     </form>
-    {% if message %}
-        <p class="message">{{ message }}</p>
-    {% endif %}
 </body>
 </html>
 
