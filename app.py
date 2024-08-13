@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request
 import os
 
 app = Flask(__name__, template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 
-# Crear el directorio para subir archivos si no existe
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 @app.route('/')
@@ -28,11 +27,5 @@ def upload_file():
 
     return "El archivo no es un PDF válido"
 
-@app.route('/uploads/<filename>')
-def serve_file(filename):
-    # Sirve el archivo para su descarga
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
 if __name__ == '__main__':
     app.run(debug=True)
-
