@@ -12,17 +12,19 @@ def upload_form():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return "No se ha seleccionado ningún archivo"
-    
-    file = request.files['file']
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return "No se ha seleccionado ningún archivo"
+        
+        file = request.files['file']
 
-    if file.filename == '':
-        return "No se ha seleccionado ningún archivo"
+        if file.filename == '':
+            return "No se ha seleccionado ningún archivo"
 
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-    file.save(filepath)
-    return redirect(url_for('list_files'))
+        if file:
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filepath)
+            return redirect(url_for('list_files'))
 
 @app.route('/files')
 def list_files():
@@ -35,6 +37,5 @@ def download_file(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 
 
