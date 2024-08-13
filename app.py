@@ -6,31 +6,25 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-@app.route('/')
-def upload_form():
-    return render_template('upload.html')
+@app.route('/', methods=['GET', 'POST'])
+def upload_and_list_files():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return "No se ha seleccionado ningún archivo"
+        
+        file = request.files['file']
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return "No se ha seleccionado ningún archivo"
+        if file.filename == '':
+            return "No se ha seleccionado ningún archivo"
+
+        if file and file.filename.endswith('.pdf'):
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filepath)
+            return render_template('upload.html', files=os.listdir(app.config['UPLOAD_FOLDER']), message=f"Archivo subido exitosamente: {file.filename}")
+        
+        return render_template('upload.html', files=os.listdir(app.config['UPLOAD_FOLDER']), message="El archivo no es un PDF válido")
     
-    file = request.files['file']
-
-    if file.filename == '':
-        return "No se ha seleccionado ningún archivo"
-
-    if file and file.filename.endswith('.pdf'):
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filepath)
-        return f"Archivo subido exitosamente: {file.filename}"
-
-    return "El archivo no es un PDF válido"
-
-@app.route('/files')
-def list_files():
-    files = os.listdir(app.config['UPLOAD_FOLDER'])
-    return render_template('files.html', files=files)
+    return render_template('upload.html', files=os.listdir(app.config['UPLOAD_FOLDER']))
 
 @app.route('/uploads/<filename>')
 def serve_file(filename):
@@ -38,3 +32,4 @@ def serve_file(filename):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
