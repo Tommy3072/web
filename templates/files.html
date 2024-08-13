@@ -7,14 +7,14 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
+            margin: 20px;
         }
         ul {
             list-style-type: none;
             padding: 0;
         }
         li {
-            margin: 10px 0;
+            margin: 5px 0;
         }
         a {
             text-decoration: none;
@@ -29,8 +29,9 @@
     <h1>Archivos Subidos</h1>
     <ul>
         {% for file in files %}
-            <li><a href="{{ url_for('download_file', filename=file) }}">{{ file }}</a></li>
+        <li><a href="{{ url_for('uploaded_file', filename=file) }}">{{ file }}</a></li>
         {% endfor %}
     </ul>
 </body>
 </html>
+
