@@ -13,28 +13,19 @@ def upload_form():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return "No se ha seleccionado ningún archivo"
+        return "No se ha seleccionado ningún archivo", 400
     
     file = request.files['file']
 
     if file.filename == '':
-        return "No se ha seleccionado ningún archivo"
+        return "No se ha seleccionado ningún archivo", 400
 
-    if file and file.filename.endswith('.pdf'):
+    if file:
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filepath)
-        return f"Archivo subido exitosamente: {file.filename}"
+        return f"Archivo subido exitosamente: {file.filename}", 200
 
-    return "El archivo no es un PDF válido"
-
-@app.route('/files')
-def list_files():
-    files = os.listdir(app.config['UPLOAD_FOLDER'])
-    return render_template('files.html', files=files)
-
-@app.route('/uploads/<filename>')
-def serve_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    return "Error al subir el archivo", 400
 
 if __name__ == '__main__':
     app.run(debug=True)
